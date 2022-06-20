@@ -1,16 +1,17 @@
 import pyodbc
+import MySQLdb
 import pandas as pd
 
 pyodbc.drivers()
+mydb = MySQLdb.connect(host='3306', user='root', passwd='2807', db='batata')
 
-conn = pyodbc.connect(
-    Trusted_Connected="Yes",
-    Driver="{SQL Server}",
-    Server="root",
-    Database="batata",
-    PWD=""
-)
-cursor = conn.cursor()
+with open('cars.csv') as csv_file:
+    csv_file = csv.reader(csv_file, delimiter=',')
+    for row in csv_file:
+        value = (row[0], row[1], row[2])
+        all_value.append(value)
 
-df = pd.read_csv("mario.csv")
-df.head()
+query = "INSERT INTO batata (Potato) VALUES (?)"
+mycursor = mydb.connect()
+mycursor.executemany(query, all_value)
+mydb.commit()
